@@ -16,7 +16,10 @@
 		"wrangler": "^4.59.2"
 	},
 	"dependencies": {
+		"@hono/zod-openapi": "^1.2.0",
+		"@scalar/hono-api-reference": "^0.9.34",
 		"hono": "^4.11.4",
-		"resend": "^6.8.0"
+		"resend": "^6.8.0",
+		"zod": "^4.3.5"
 	}
 }
