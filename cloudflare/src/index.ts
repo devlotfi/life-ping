@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { Resend } from "resend";
-import { env } from "cloudflare:workers";
 
 type Env = {
   KV: KVNamespace;
@@ -9,13 +8,12 @@ type Env = {
 };
 
 const app = new Hono<{ Bindings: Env }>();
-const resend = new Resend(env.RESEND_API_KEY);
 
 const EMAILS_KEY = "emails";
 const PING_KEY = "last_ping";
 
 // ---------------------
-// Simple Auth Middleware
+// Auth Middleware
 // ---------------------
 
 app.use("*", async (c, next) => {
@@ -72,15 +70,11 @@ app.post("/ping", async (c) => {
 });
 
 // ---------------------
-// Export fetch handler
+// Export Worker
 // ---------------------
 
 export default {
   fetch: app.fetch,
-
-  // ---------------------
-  // Scheduled Job
-  // ---------------------
 
   async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
     ctx.waitUntil(runHealthCheck(env));
@@ -88,7 +82,7 @@ export default {
 };
 
 // ---------------------
-// Health Check Logic
+// Health Check
 // ---------------------
 
 async function runHealthCheck(env: Env) {
@@ -102,9 +96,9 @@ async function runHealthCheck(env: Env) {
   const lastPing = Number(lastPingRaw);
   const now = Date.now();
 
-  const HOURS_24 = 5 * 60 * 1000;
+  const MINUTES_5 = 5 * 60 * 1000;
 
-  if (now - lastPing < HOURS_24) {
+  if (now - lastPing < MINUTES_5) {
     console.log("Service is healthy");
     return;
   }
@@ -126,14 +120,16 @@ async function runHealthCheck(env: Env) {
 // ---------------------
 
 async function sendAlertEmails(env: Env, recipients: string[]) {
+  const resend = new Resend(env.RESEND_API_KEY);
+
   const { error } = await resend.emails.send({
     from: "Life Ping <lifeping@resend.dev>",
     to: recipients,
     subject: "Inactivity Alert",
     html: `
-        <h2>⚠ Service Offline</h2>
-        <p>No ping received for more than 24 hours.</p>
-      `,
+      <h2>⚠ Service Offline</h2>
+      <p>No ping received for more than 5 minutes.</p>
+    `,
   });
 
   if (error) {
