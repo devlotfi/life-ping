@@ -4,6 +4,7 @@ import { EMAILS_KEY } from "../constants";
 import z from "zod";
 import { createRoute, OpenAPIHono } from "@hono/zod-openapi";
 import { ErrorSchema } from "../types/error-schema";
+import { sendMail } from "../utils/send-mail";
 
 const emails = new OpenAPIHono<HonoBindings>();
 
@@ -75,6 +76,39 @@ emails.openapi(
   async (c) => {
     const json = await c.req.valid("json");
     await c.env.LIFE_PING_KV.put(EMAILS_KEY, JSON.stringify(json));
+    return c.json({ success: true }, 200);
+  },
+);
+
+emails.openapi(
+  createRoute({
+    method: "post",
+    path: "/test",
+    security: [
+      {
+        ApiKeyAuth: [],
+      },
+    ],
+    responses: {
+      200: {
+        content: {
+          "application/json": {
+            schema: z.object({
+              success: z.boolean(),
+            }),
+          },
+        },
+        description: "Test email",
+      },
+    },
+  }),
+  async (c) => {
+    const emails = await c.env.LIFE_PING_KV.get<string[]>(EMAILS_KEY, "json");
+    if (!emails || emails.length === 0) {
+      console.log("No emails configured");
+      throw new Error();
+    }
+    await sendMail(emails, "lol", new Date());
     return c.json({ success: true }, 200);
   },
 );
