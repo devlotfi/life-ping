@@ -26,8 +26,8 @@
    */
   "kv_namespaces": [
     {
-      "binding": "KV",
-      "id": "LIFE_PING",
+      "binding": "LIFE_PING",
+      "id": "b5779a5ee13543c780147bb4bad087cd",
     },
   ],
   /**
