@@ -1,25 +1,33 @@
 {
-	"name": "cloudflare",
-	"version": "0.0.0",
-	"private": true,
-	"scripts": {
-		"deploy": "wrangler deploy",
-		"dev": "wrangler dev",
-		"start": "wrangler dev",
-		"test": "vitest",
-		"cf-typegen": "wrangler types"
-	},
-	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "^0.8.19",
-		"typescript": "^5.5.2",
-		"vitest": "~3.2.0",
-		"wrangler": "^4.59.2"
-	},
-	"dependencies": {
-		"@hono/zod-openapi": "^1.2.0",
-		"@scalar/hono-api-reference": "^0.9.34",
-		"hono": "^4.11.4",
-		"resend": "^6.8.0",
-		"zod": "^4.3.5"
-	}
+  "name": "cloudflare",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "test": "vitest",
+    "cf-typegen": "wrangler types",
+    "email:dev": "email dev"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.8.19",
+    "@react-email/preview-server": "5.2.5",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "react-email": "5.2.5",
+    "typescript": "^5.5.2",
+    "vitest": "~3.2.0",
+    "wrangler": "^4.59.2"
+  },
+  "dependencies": {
+    "@hono/zod-openapi": "^1.2.0",
+    "@react-email/components": "1.0.6",
+    "@scalar/hono-api-reference": "^0.9.34",
+    "hono": "^4.11.4",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "resend": "^6.8.0",
+    "zod": "^4.3.5"
+  }
 }

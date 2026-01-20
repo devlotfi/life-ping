@@ -1,5 +1,5 @@
 import { EMAILS_KEY, PING_KEY } from "../constants";
-import { resend } from "../resend";
+import { sendMail } from "../utils/send-mail";
 
 export async function healthCheck(env: Env) {
   const lastPingRaw = await env.LIFE_PING_KV.get(PING_KEY);
@@ -28,19 +28,5 @@ export async function healthCheck(env: Env) {
     return;
   }
 
-  const { error } = await resend.emails.send({
-    from: "Life Ping <lifeping@resend.dev>",
-    to: emails,
-    subject: "Inactivity Alert",
-    html: `
-        <h2>⚠ Service Offline</h2>
-        <p>No ping received for more than 24 hours.</p>
-      `,
-  });
-
-  if (error) {
-    console.error("Resend error:", JSON.stringify(error));
-  } else {
-    console.log("Alert emails sent");
-  }
+  await sendMail(emails, "lol");
 }
