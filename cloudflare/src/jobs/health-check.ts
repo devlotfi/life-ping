@@ -12,7 +12,7 @@ export async function healthCheck(env: Env) {
   const lastPing = Number(lastPingRaw);
   const now = Date.now();
 
-  const HOURS_24 = 5 * 60 * 1000;
+  const HOURS_24 = 24 * 60 * 60 * 1000;
 
   if (now - lastPing < HOURS_24) {
     console.log("Service is healthy");
