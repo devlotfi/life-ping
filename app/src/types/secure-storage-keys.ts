@@ -1,0 +1,4 @@
+export enum SecureStorageKeys {
+  API_KEY = "API_KEY",
+  BASE_URL = "BASE_URL",
+}
