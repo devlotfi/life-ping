@@ -23,6 +23,7 @@ import { toastConfig } from "./toast-config";
 import ContentGradient from "./layout/content-gradient";
 import SettingsProvider from "./provider/settings-provider";
 import InformationScreen from "./screens/information-screen";
+import ApiProvider from "./provider/api-provider";
 
 const BottomTabs = createBottomTabNavigator<BottomTabsParamList>();
 
@@ -171,11 +172,13 @@ export default function Providers() {
         <AssetsProvider>
           <KeyboardProvider>
             <SettingsProvider>
-              <App></App>
-              <StatusBar
-                translucent={true}
-                style={colorScheme === "light" ? "dark" : "light"}
-              ></StatusBar>
+              <ApiProvider>
+                <App></App>
+                <StatusBar
+                  translucent={true}
+                  style={colorScheme === "light" ? "dark" : "light"}
+                ></StatusBar>
+              </ApiProvider>
             </SettingsProvider>
           </KeyboardProvider>
         </AssetsProvider>

@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import Text from "../components/text";
 import { Card, useTheme } from "react-native-paper";
+import { ApiContext } from "../context/api-context";
+import { OpenapiQueryClient } from "openapi-react-query";
+import { paths } from "../__generated__/schema";
 
 function MissingSettings() {
   const theme = useTheme();
@@ -41,20 +44,8 @@ function MissingSettings() {
   );
 }
 
-function InformationData() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["INFORMATION"],
-    queryFn: async () => {
-      const [apiKey, baseUrl] = await Promise.all([
-        SecureStore.getItem(SecureStorageKeys.API_KEY),
-        SecureStore.getItem(SecureStorageKeys.BASE_URL),
-      ]);
-      return {
-        apiKey,
-        baseUrl,
-      };
-    },
-  });
+function InformationData({ $api }: { $api: OpenapiQueryClient<paths> }) {
+  const { data, isLoading } = $api.useQuery("get", "/api/name", {});
 
   return (
     <ScrollView
@@ -69,7 +60,8 @@ function InformationData() {
 }
 
 export default function InformationScreen() {
+  const { $api } = useContext(ApiContext);
   const { apiKey, baseUrl } = useContext(SettingsContext);
-  if (!apiKey || !baseUrl) return <MissingSettings></MissingSettings>;
-  return <InformationData></InformationData>;
+  if (!apiKey || !baseUrl || !$api) return <MissingSettings></MissingSettings>;
+  return <InformationData $api={$api}></InformationData>;
 }
