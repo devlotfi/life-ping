@@ -6,12 +6,25 @@ export interface AppTranslation {
   save: string;
   apiKey: string;
   apiKeyDescription: string;
+  apiKeySaved: string;
   baseUrl: string;
   baseUrlDescription: string;
-  language: string;
-
-  apiKeySaved: string;
   baseUrlSaved: string;
+  name: string;
+  nameDescription: string;
+  nameSaved: string;
+  emails: string;
+  emailsDescription: string;
+  emailsSaved: string;
+  language: string;
+  email: string;
+  emptyList: string;
+  unsavedChanges: string;
+  nextAlert: string;
+  alertCountdown: string;
+  timerElapsed: string;
+  cancel: string;
+
   connectionError: string;
   permissionRequired: string;
   unknownError: string;

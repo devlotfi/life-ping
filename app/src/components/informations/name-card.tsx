@@ -1,6 +1,6 @@
 import Text from "../text";
 import { Button, Card, useTheme } from "react-native-paper";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import ValidatedTextInput from "../validated-text-input";
@@ -8,22 +8,33 @@ import Toast from "react-native-toast-message";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useTranslation } from "react-i18next";
-import { useContext } from "react";
-import { SettingsContext } from "../../context/settings-context";
+import { OptionalNullable } from "../../types/optional-nullable";
+import { $api } from "../../api/openapi-client";
 
-export default function BaseUrlCard() {
+export default function NameCard({
+  name,
+  apiKey,
+  baseUrl,
+}: {
+  name: OptionalNullable<string>;
+  apiKey: string;
+  baseUrl: string;
+}) {
   const { t } = useTranslation();
   const theme = useTheme();
-  const { baseUrl, setBaseUrl } = useContext(SettingsContext);
+  const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: async (baseUrl: string) => {
-      await setBaseUrl(baseUrl);
+  const { mutate, isPending } = $api.useMutation("post", "/api/name", {
+    onSuccess() {
+      queryClient.resetQueries({
+        exact: false,
+        queryKey: ["get", "/api/name"],
+      });
       Toast.show({
         type: "success",
         props: {
           icon: faSave,
-          text: t("baseUrlSaved"),
+          text: t("nameSaved"),
         },
       });
     },
@@ -31,13 +42,21 @@ export default function BaseUrlCard() {
 
   const formik = useFormik({
     initialValues: {
-      baseUrl: baseUrl || "",
+      name: name || "",
     },
     validationSchema: yup.object({
-      baseUrl: yup.string().required(),
+      name: yup.string().required(),
     }),
     onSubmit(values) {
-      mutate(values.baseUrl);
+      mutate({
+        body: {
+          name: values.name,
+        },
+        baseUrl,
+        headers: {
+          "x-api-key": apiKey,
+        },
+      });
     },
   });
 
@@ -50,19 +69,19 @@ export default function BaseUrlCard() {
       }}
     >
       <Card.Content style={{ gap: 10 }}>
-        <Text style={{ fontSize: 23, fontWeight: "bold" }}>{t("baseUrl")}</Text>
+        <Text style={{ fontSize: 23, fontWeight: "bold" }}>{t("name")}</Text>
         <Text style={{ fontSize: 16, fontWeight: "medium", opacity: 0.7 }}>
-          {t("baseUrlDescription")}
+          {t("nameDescription")}
         </Text>
         <ValidatedTextInput
-          name="baseUrl"
+          name="name"
           formik={formik}
           mode="outlined"
           outlineStyle={{
             borderRadius: 10,
           }}
           autoCapitalize="none"
-          label={t("baseUrl")}
+          label={t("name")}
         ></ValidatedTextInput>
         <Button
           mode="contained"

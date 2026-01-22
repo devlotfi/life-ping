@@ -23,13 +23,13 @@ export default function SettingsProvider({ children }: PropsWithChildren) {
 
   const setApiKey = useCallback(async (value: string) => {
     await SecureStore.setItem(SecureStorageKeys.API_KEY, value);
-    queryClient.refetchQueries({
+    queryClient.resetQueries({
       queryKey: ["SETTINGS"],
     });
   }, []);
   const setBaseUrl = useCallback(async (value: string) => {
     await SecureStore.setItem(SecureStorageKeys.BASE_URL, value);
-    queryClient.refetchQueries({
+    queryClient.resetQueries({
       queryKey: ["SETTINGS"],
     });
   }, []);

@@ -1,100 +1,108 @@
-import { StyleSheet, View, ViewProps } from "react-native";
+import { Pressable, View } from "react-native";
 import Text from "../components/text";
-import { PropsWithChildren } from "react";
-import { useTheme } from "react-native-paper";
-import { LinearGradient } from "expo-linear-gradient";
+import { ActivityIndicator, useTheme } from "react-native-paper";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faMountain, faUserClock } from "@fortawesome/free-solid-svg-icons";
+import { faUserClock } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+import { GradientCard } from "../components/dashboard/gradient-card";
+import CircleButton from "../components/dashboard/circle-button";
+import React, { useContext } from "react";
+import MissingSettings from "../components/missing-settings";
+import { SettingsContext } from "../context/settings-context";
+import { $api } from "../api/openapi-client";
+import LoadingView from "../components/loading-view";
+import ErrorView from "../components/error-view";
+import Counter from "../components/dashboard/counter";
+import { useQueryClient } from "@tanstack/react-query";
+import Toast from "react-native-toast-message";
 
-function GradientCard({ children }: PropsWithChildren) {
+function DashboardFetch({
+  apiKey,
+  baseUrl,
+}: {
+  apiKey: string;
+  baseUrl: string;
+}) {
+  const { t } = useTranslation();
   const theme = useTheme();
+  const queryClient = useQueryClient();
 
-  return (
-    <LinearGradient
-      colors={[theme.colors.surface, theme.colors.background]}
-      style={{
-        padding: 5,
-        borderRadius: 17,
-      }}
-    >
-      <LinearGradient
-        colors={[theme.colors.background, theme.colors.surface]}
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 7,
-          borderRadius: 10,
-          alignItems: "center",
-        }}
-      >
-        {children}
-      </LinearGradient>
-    </LinearGradient>
+  const { data: dataPing, isLoading: isLoadingPing } = $api.useQuery(
+    "get",
+    "/api/ping",
+    {
+      baseUrl,
+      headers: {
+        "x-api-key": apiKey,
+      },
+    },
   );
-}
 
-function CircleButton({ children, style, ...props }: ViewProps) {
-  const theme = useTheme();
+  const { mutate: mutatePing, isPending: isPendingPing } = $api.useMutation(
+    "post",
+    "/api/ping",
+    {
+      onSuccess() {
+        queryClient.resetQueries({
+          exact: false,
+          queryKey: ["get", "/api/ping"],
+        });
+        Toast.show({
+          type: "success",
+          props: {
+            icon: faUserClock,
+            text: t("emailsSaved"),
+          },
+        });
+      },
+    },
+  );
+
+  if (isLoadingPing) return <LoadingView></LoadingView>;
+
+  if (dataPing === null || dataPing === undefined)
+    return <ErrorView></ErrorView>;
 
   return (
-    <View
-      style={{
-        padding: 10,
-        borderColor: theme.colors.primary,
-        borderWidth: 2,
-        borderRadius: 1000,
-        ...StyleSheet.flatten(style),
-      }}
-      {...props}
-    >
-      <LinearGradient
-        colors={[theme.colors.surface, theme.colors.background]}
-        style={{
-          padding: 5,
-          borderRadius: 1000,
-        }}
-      >
-        <LinearGradient
-          colors={[theme.colors.background, theme.colors.surface]}
-          style={{
-            height: 150,
-            width: 150,
-            padding: 10,
-            borderRadius: 1000,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 5,
+    <View style={{ paddingHorizontal: 12, paddingVertical: 40, flex: 1 }}>
+      {dataPing.lastPing ? (
+        <Counter lastPing={Number.parseInt(dataPing.lastPing)}></Counter>
+      ) : null}
+
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Pressable
+          onPress={() => {
+            mutatePing({
+              baseUrl,
+              headers: {
+                "x-api-key": apiKey,
+              },
+            });
           }}
         >
-          {children}
-        </LinearGradient>
-      </LinearGradient>
+          <CircleButton>
+            {isPendingPing ? (
+              <ActivityIndicator animating size="large"></ActivityIndicator>
+            ) : (
+              <>
+                <FontAwesomeIcon
+                  icon={faUserClock}
+                  size={35}
+                  color={theme.colors.primary}
+                  style={{ opacity: 0.8 }}
+                ></FontAwesomeIcon>
+                <Text style={{ fontSize: 22, fontWeight: "bold" }}>Ping</Text>
+              </>
+            )}
+          </CircleButton>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 export default function DashboardScreen() {
-  const { t } = useTranslation();
-  const theme = useTheme();
-
-  return (
-    <View style={{ paddingHorizontal: 12, paddingVertical: 40, flex: 1 }}>
-      <GradientCard>
-        <Text>lol</Text>
-        <Text>lol</Text>
-      </GradientCard>
-
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <CircleButton>
-          <FontAwesomeIcon
-            icon={faUserClock}
-            size={35}
-            color={theme.colors.primary}
-            style={{ opacity: 0.8 }}
-          ></FontAwesomeIcon>
-          <Text style={{ fontSize: 22, fontWeight: "bold" }}>Ping</Text>
-        </CircleButton>
-      </View>
-    </View>
-  );
+  const { apiKey, baseUrl } = useContext(SettingsContext);
+  if (!apiKey || !baseUrl) return <MissingSettings></MissingSettings>;
+  return <DashboardFetch apiKey={apiKey} baseUrl={baseUrl}></DashboardFetch>;
 }

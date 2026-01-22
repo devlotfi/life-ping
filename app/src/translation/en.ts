@@ -9,12 +9,27 @@ export const EN: AppTranslation = {
   apiKey: "API key",
   apiKeyDescription:
     "The api key is used to authorize access to your cloudflare worker",
+  apiKeySaved: "API key has been saved",
   baseUrl: "Base URL",
   baseUrlDescription: "The base URL to your cloudflare worker",
-  language: "Language",
-
-  apiKeySaved: "API key has been saved",
   baseUrlSaved: "Base URL has been saved",
+  name: "Name",
+  nameDescription:
+    "The name that will be showed to the recipients in the e-mail",
+  nameSaved: "Name saved",
+  emails: "Emails",
+  emailsDescription:
+    "The emails the will recieve the alert in case of inactivity",
+  emailsSaved: "Emails saved",
+  language: "Language",
+  email: "Email",
+  emptyList: "The list is empty",
+  unsavedChanges: "Unsaved changes",
+  nextAlert: "Next alert",
+  alertCountdown: "Alert Countdown",
+  timerElapsed: "Timer elapsed",
+  cancel: "Cancel",
+
   connectionError: "Connection error",
   permissionRequired: "Permission required",
   unknownError: "Unknown error",

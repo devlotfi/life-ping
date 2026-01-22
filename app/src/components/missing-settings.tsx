@@ -1,20 +1,14 @@
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { View } from "react-native";
-import { Card, Text, useTheme } from "react-native-paper";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import Text from "../components/text";
+import { Card, useTheme } from "react-native-paper";
 
-export default function ErrorView() {
+export default function MissingSettings() {
   const theme = useTheme();
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: theme.colors.background,
-      }}
-    >
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Card
         mode="contained"
         style={{
@@ -25,15 +19,15 @@ export default function ErrorView() {
       >
         <Card.Content style={{ alignItems: "center", gap: 10 }}>
           <FontAwesomeIcon
-            icon={faTriangleExclamation}
+            icon={faInfoCircle}
             color={theme.colors.primary}
             size={50}
           ></FontAwesomeIcon>
           <Text style={{ fontSize: 23, fontWeight: "bold" }}>
-            Cannot fetch data
+            Missing settings
           </Text>
           <Text style={{ fontSize: 15, textAlign: "center" }}>
-            Could not retrieve data from the API, check your API key and URL
+            You must provide the api key and the base url in the settings
           </Text>
         </Card.Content>
       </Card>
