@@ -29,11 +29,10 @@ export const EN: AppTranslation = {
   alertCountdown: "Alert Countdown",
   timerElapsed: "Timer elapsed",
   cancel: "Cancel",
+  timerUpdated: "Timer updated",
 
   connectionError: "Connection error",
   permissionRequired: "Permission required",
   unknownError: "Unknown error",
-
-  mustConnectInternetQnh: "You must be connected to the internet to fetch QNH",
-  mustHaveApiKeyQnh: "You must have an API key for OpenWeatherMap",
+  requestError: "Request error",
 };

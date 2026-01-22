@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { paths } from "../../__generated__/schema";
 import Text from "../text";
 import { GradientCard } from "./gradient-card";
 import { formatTime } from "../../utils";

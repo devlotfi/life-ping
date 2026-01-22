@@ -38,6 +38,15 @@ export default function NameCard({
         },
       });
     },
+    onError() {
+      Toast.show({
+        type: "error",
+        props: {
+          icon: faSave,
+          text: t("requestError"),
+        },
+      });
+    },
   });
 
   const formik = useFormik({

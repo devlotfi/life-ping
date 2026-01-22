@@ -51,7 +51,16 @@ function DashboardFetch({
           type: "success",
           props: {
             icon: faUserClock,
-            text: t("emailsSaved"),
+            text: t("timerUpdated"),
+          },
+        });
+      },
+      onError() {
+        Toast.show({
+          type: "error",
+          props: {
+            icon: faUserClock,
+            text: t("requestError"),
           },
         });
       },

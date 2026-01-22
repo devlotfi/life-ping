@@ -91,6 +91,15 @@ export default function EmailsCard({
         },
       });
     },
+    onError() {
+      Toast.show({
+        type: "error",
+        props: {
+          icon: faSave,
+          text: t("requestError"),
+        },
+      });
+    },
   });
 
   const formik = useFormik({

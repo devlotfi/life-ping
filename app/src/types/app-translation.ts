@@ -24,11 +24,10 @@ export interface AppTranslation {
   alertCountdown: string;
   timerElapsed: string;
   cancel: string;
+  timerUpdated: string;
 
   connectionError: string;
   permissionRequired: string;
   unknownError: string;
-
-  mustConnectInternetQnh: string;
-  mustHaveApiKeyQnh: string;
+  requestError: string;
 }
