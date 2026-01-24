@@ -53,7 +53,7 @@ export default function AlertEmail() {
                     as="h3"
                     className="text-[26px] font-bold text-center"
                   >
-                    You may check on them it you can
+                    You may check on them if you can
                   </Heading>
 
                   <Text className="text-base">

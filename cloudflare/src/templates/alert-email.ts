@@ -120,7 +120,7 @@ export function AlertEmail({
                                             text-align: center;
                                           "
                                         >
-                                          You may check on them it you can
+                                          You may check on them if you can
                                         </h3>
                                         <p
                                           style="
