@@ -1,4 +1,4 @@
-import { Pressable, View } from "react-native";
+import { Pressable, RefreshControl, ScrollView, View } from "react-native";
 import Text from "../components/text";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -27,16 +27,16 @@ function DashboardFetch({
   const theme = useTheme();
   const queryClient = useQueryClient();
 
-  const { data: dataPing, isLoading: isLoadingPing } = $api.useQuery(
-    "get",
-    "/api/ping",
-    {
-      baseUrl,
-      headers: {
-        "x-api-key": apiKey,
-      },
+  const {
+    data: dataPing,
+    isLoading: isLoadingPing,
+    refetch: refetchPing,
+  } = $api.useQuery("get", "/api/ping", {
+    baseUrl,
+    headers: {
+      "x-api-key": apiKey,
     },
-  );
+  });
 
   const { mutate: mutatePing, isPending: isPendingPing } = $api.useMutation(
     "post",
@@ -73,7 +73,22 @@ function DashboardFetch({
     return <ErrorView></ErrorView>;
 
   return (
-    <View style={{ paddingHorizontal: 12, paddingVertical: 40, flex: 1 }}>
+    <ScrollView
+      contentContainerStyle={{
+        paddingHorizontal: 12,
+        paddingVertical: 40,
+        flex: 1,
+      }}
+      refreshControl={
+        <RefreshControl
+          colors={[theme.colors.primary]}
+          refreshing={isLoadingPing}
+          onRefresh={() => {
+            refetchPing();
+          }}
+        />
+      }
+    >
       {dataPing.lastPing ? (
         <Counter lastPing={Number.parseInt(dataPing.lastPing)}></Counter>
       ) : null}
@@ -106,7 +121,7 @@ function DashboardFetch({
           </CircleButton>
         </Pressable>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
