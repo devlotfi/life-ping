@@ -29,6 +29,11 @@ export const FR: AppTranslation = {
   timerElapsed: "Minuteur expiré",
   cancel: "Annuler",
   timerUpdated: "Minuteur mis à jour",
+  allow: "Autoriser",
+  notifications1:
+    "Vous devez autoriser les notifications pour utiliser l'application",
+  notifications2:
+    "Vous recevrez des rappels quotidiens pour éviter les alertes accidentelles",
 
   connectionError: "Erreur de connexion",
   permissionRequired: "Autorisation requise",

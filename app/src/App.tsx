@@ -23,6 +23,30 @@ import { toastConfig } from "./toast-config";
 import ContentGradient from "./layout/content-gradient";
 import SettingsProvider from "./provider/settings-provider";
 import InformationScreen from "./screens/information-screen";
+import * as Notifications from "expo-notifications";
+import NotificationsProvider from "./provider/notifications-provider";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: false,
+  }),
+});
+/* Notifications.requestPermissionsAsync();
+
+Notifications.scheduleNotificationAsync({
+  content: {
+    title: "Look at that notification",
+    body: "I'm so proud of myself!",
+  },
+  trigger: {
+    type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+    seconds: 120,
+    repeats: true,
+  },
+}); */
 
 const BottomTabs = createBottomTabNavigator<BottomTabsParamList>();
 
@@ -171,11 +195,13 @@ export default function Providers() {
         <AssetsProvider>
           <KeyboardProvider>
             <SettingsProvider>
-              <App></App>
-              <StatusBar
-                translucent={true}
-                style={colorScheme === "light" ? "dark" : "light"}
-              ></StatusBar>
+              <NotificationsProvider>
+                <App></App>
+                <StatusBar
+                  translucent={true}
+                  style={colorScheme === "light" ? "dark" : "light"}
+                ></StatusBar>
+              </NotificationsProvider>
             </SettingsProvider>
           </KeyboardProvider>
         </AssetsProvider>

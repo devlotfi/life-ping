@@ -5,6 +5,7 @@ export interface AppAssets {
   ar: any;
   en: any;
   fr: any;
+  notifications: any;
 }
 
 interface AssetsContextType {
@@ -17,6 +18,7 @@ const initialValue: AssetsContextType = {
     ar: null,
     en: null,
     fr: null,
+    notifications: null,
   },
 };
 

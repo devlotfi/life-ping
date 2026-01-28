@@ -15,6 +15,7 @@ export default function AssetsProvider({ children }: PropsWithChildren) {
     require("../assets/flags/ar.png"),
     require("../assets/flags/en.png"),
     require("../assets/flags/fr.png"),
+    require("../assets/notifications.png"),
   ]);
 
   if (!fontsLoaded || !assets || assetsLoadingError || fontLoadingError) {
@@ -32,6 +33,7 @@ export default function AssetsProvider({ children }: PropsWithChildren) {
           ar: assets[1],
           en: assets[2],
           fr: assets[3],
+          notifications: assets[4],
         },
       }}
     >

@@ -25,6 +25,9 @@ export interface AppTranslation {
   timerElapsed: string;
   cancel: string;
   timerUpdated: string;
+  allow: string;
+  notifications1: string;
+  notifications2: string;
 
   connectionError: string;
   permissionRequired: string;

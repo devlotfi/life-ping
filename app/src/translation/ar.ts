@@ -29,6 +29,9 @@ export const AR: AppTranslation = {
   timerElapsed: "انتهى المؤقت",
   cancel: "إلغاء",
   timerUpdated: "تم تحديث المؤقت",
+  allow: "سماح",
+  notifications1: "يجب عليك السماح بالإشعارات لتتمكن من استخدام التطبيق",
+  notifications2: "ستتلقى تذكيرات يومية لتجنب التنبيهات غير المقصودة",
 
   connectionError: "خطأ في الاتصال",
   permissionRequired: "مطلوب إذن",

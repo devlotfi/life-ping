@@ -30,6 +30,9 @@ export const EN: AppTranslation = {
   timerElapsed: "Timer elapsed",
   cancel: "Cancel",
   timerUpdated: "Timer updated",
+  allow: "Allow",
+  notifications1: "You must allow notifications to use the app",
+  notifications2: "ou will recieve daily reminders to avoid accidental alerts",
 
   connectionError: "Connection error",
   permissionRequired: "Permission required",
