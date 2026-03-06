@@ -7,7 +7,7 @@ An app that keeps track of your activity and sends alert emails in case of long 
 # 📌 Contents
 
 - [Tech stack](#tech-stack)
-  - [Web app](#web-app)
+  - [App](#app)
   - [Services](#services)
   - [Diagrams](#diagrams)
 - [How does the system work ?](#how-does-the-system-work-)
@@ -15,7 +15,7 @@ An app that keeps track of your activity and sends alert emails in case of long 
 
 # Tech stack
 
-## Web app
+## App
 
 <p float="left">
   <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/ts.svg">
