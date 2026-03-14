@@ -1,6 +1,6 @@
 import { formatPastDate } from "../utils/format-past-date";
 
-export function AlertEmail({
+export function AlertEmailEN({
   name,
   lastPing,
 }: {

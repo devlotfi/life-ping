@@ -1,12 +1,12 @@
 import { resend } from "../resend";
-import { AlertEmail } from "../templates/alert-email";
+import { AlertEmailEN } from "../templates/alert-email-en";
 
 export async function sendMail(emails: string[], name: string, lastPing: Date) {
   const { error } = await resend.emails.send({
     from: "Life Ping <lifeping@resend.dev>",
     to: emails,
     subject: `Inactivity Alert (${name})`,
-    html: AlertEmail({
+    html: AlertEmailEN({
       name,
       lastPing,
     }),

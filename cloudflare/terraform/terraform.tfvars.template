@@ -1,0 +1,4 @@
+cloudflare_api_token = "cloudflare_api_token"
+account_id           = "account_id"
+api_secret           = "api_secret"
+resend_api_key           = "api_secret"

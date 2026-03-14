@@ -1,0 +1,1 @@
+ALTER TABLE `Contacts` ADD `language` text DEFAULT 'en' NOT NULL;

@@ -3,23 +3,29 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "deploy": "wrangler deploy",
     "dev": "wrangler dev",
-    "start": "wrangler dev",
-    "test": "vitest",
+    "terraform-deploy": "wrangler deploy --dry-run --outdir dist && cd terraform && terraform apply",
+    "migrate:local": "npx wrangler d1 migrations apply D1_DB --local",
+    "migrate:remote": "npx drizzle-kit generate && npx drizzle-kit migrate",
     "cf-typegen": "wrangler types"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.8.19",
-    "typescript": "^5.5.2",
-    "vitest": "~3.2.0",
-    "wrangler": "^4.59.2"
+    "@cloudflare/vitest-pool-workers": "^0.13.0",
+    "@types/node": "^25.5.0",
+    "drizzle-kit": "^0.31.9",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "~4.1.0",
+    "wrangler": "^4.73.0"
   },
   "dependencies": {
-    "@hono/zod-openapi": "^1.2.0",
-    "@scalar/hono-api-reference": "^0.9.34",
-    "hono": "^4.11.4",
-    "resend": "^6.8.0",
-    "zod": "^4.3.5"
+    "@hono/zod-openapi": "^1.2.2",
+    "@scalar/hono-api-reference": "^0.10.3",
+    "dotenv": "^17.3.1",
+    "drizzle-orm": "^0.45.1",
+    "drizzle-zod": "^0.8.3",
+    "hono": "^4.12.7",
+    "resend": "^6.9.3",
+    "zod": "^4.3.6"
   }
 }

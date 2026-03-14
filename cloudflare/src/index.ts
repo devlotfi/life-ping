@@ -20,7 +20,11 @@ app.get("/scalar", Scalar({ url: "/doc" }));
 
 export default {
   fetch: app.fetch,
-  async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
+  async scheduled(
+    controller: ScheduledController,
+    env: Env,
+    ctx: ExecutionContext,
+  ) {
     ctx.waitUntil(healthCheck(env));
   },
-};
+} satisfies ExportedHandler<Env>;

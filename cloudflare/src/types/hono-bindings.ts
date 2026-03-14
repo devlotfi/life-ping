@@ -1,1 +1,3 @@
-export type HonoBindings = { Bindings: Env };
+import { EnvVars } from "./env-vars";
+
+export type HonoBindings = { Bindings: Env & EnvVars };

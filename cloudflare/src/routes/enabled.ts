@@ -1,10 +1,10 @@
 import { HonoBindings } from "../types/hono-bindings";
-import { PING_KEY } from "../constants";
+import { ENABLED_KEY, PING_KEY } from "../constants";
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 
-const pingRoutes = new OpenAPIHono<HonoBindings>();
+const enabledRoutes = new OpenAPIHono<HonoBindings>();
 
-pingRoutes.openapi(
+enabledRoutes.openapi(
   createRoute({
     method: "get",
     path: "/",
@@ -18,7 +18,7 @@ pingRoutes.openapi(
         content: {
           "application/json": {
             schema: z.object({
-              lastPing: z.date().nullable(),
+              enabled: z.boolean(),
             }),
           },
         },
@@ -27,14 +27,14 @@ pingRoutes.openapi(
     },
   }),
   async (c) => {
-    const value = await c.env.KV.get(PING_KEY);
+    const value = await c.env.KV.get(ENABLED_KEY);
     return c.json({
       lastPing: value,
     });
   },
 );
 
-pingRoutes.openapi(
+enabledRoutes.openapi(
   createRoute({
     method: "post",
     path: "/",
@@ -65,4 +65,4 @@ pingRoutes.openapi(
   },
 );
 
-export { pingRoutes };
+export { enabledRoutes };

@@ -1,8 +1,10 @@
-import { EMAILS_KEY, NAME_KEY, PING_KEY } from "../constants";
+import { drizzle } from "drizzle-orm/d1";
+import { NAME_KEY, PING_KEY } from "../constants";
 import { sendMail } from "../utils/send-mail";
+import { contacts } from "../db/schema";
 
 export async function healthCheck(env: Env) {
-  const lastPingRaw = await env.LIFE_PING_KV.get(PING_KEY);
+  const lastPingRaw = await env.KV.get(PING_KEY);
 
   if (!lastPingRaw) {
     console.log("No ping data yet");
@@ -13,22 +15,25 @@ export async function healthCheck(env: Env) {
   const lastPingDate = new Date(Number(lastPingRaw));
   const now = Date.now();
 
-  const HOURS_36 = 24 * 60 * 60 * 1000;
+  const HOURS_48 = 48 * 60 * 60 * 1000;
 
-  if (now - lastPing < HOURS_36) {
+  if (now - lastPing < HOURS_48) {
     console.log("Service is healthy");
     return;
   }
 
   console.log("Ping expired — sending alert emails");
+  const db = drizzle(env.D1_DB);
+  const contactList = await db.select().from(contacts).all();
+  const name = await env.KV.get(NAME_KEY, "text");
 
-  const emails = await env.LIFE_PING_KV.get<string[]>(EMAILS_KEY, "json");
-  const name = await env.LIFE_PING_KV.get(NAME_KEY, "text");
-
-  if (!name || !emails || emails.length === 0) {
-    console.log("No emails or name configured");
+  if (!name || !contactList || contactList.length === 0) {
+    console.log("No contacts or name configured");
     return;
   }
 
+  const emails = contactList
+    .map((contact) => contact.email)
+    .filter((contact) => contact !== null);
   await sendMail(emails, name, lastPingDate);
 }

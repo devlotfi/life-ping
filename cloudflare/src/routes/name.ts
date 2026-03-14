@@ -1,13 +1,13 @@
 import { Hono } from "hono";
 import { HonoBindings } from "../types/hono-bindings";
-import { EMAILS_KEY, NAME_KEY } from "../constants";
+import { NAME_KEY } from "../constants";
 import z from "zod";
 import { createRoute, OpenAPIHono } from "@hono/zod-openapi";
 import { ErrorSchema } from "../types/error-schema";
 
-const name = new OpenAPIHono<HonoBindings>();
+const nameRoutes = new OpenAPIHono<HonoBindings>();
 
-name.openapi(
+nameRoutes.openapi(
   createRoute({
     method: "get",
     path: "/",
@@ -30,7 +30,7 @@ name.openapi(
     },
   }),
   async (c) => {
-    const name = await c.env.LIFE_PING_KV.get(NAME_KEY, "text");
+    const name = await c.env.KV.get(NAME_KEY, "text");
     return c.json(
       {
         name,
@@ -40,7 +40,7 @@ name.openapi(
   },
 );
 
-name.openapi(
+nameRoutes.openapi(
   createRoute({
     method: "post",
     path: "/",
@@ -75,9 +75,9 @@ name.openapi(
   }),
   async (c) => {
     const json = await c.req.valid("json");
-    await c.env.LIFE_PING_KV.put(NAME_KEY, json.name);
+    await c.env.KV.put(NAME_KEY, json.name);
     return c.json({ success: true }, 200);
   },
 );
 
-export { name };
+export { nameRoutes };

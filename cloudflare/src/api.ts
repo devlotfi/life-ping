@@ -1,10 +1,9 @@
-import { Hono } from "hono";
 import { apiKeyMiddleware } from "./middlewares/api-key-middleware";
 import { HonoBindings } from "./types/hono-bindings";
-import { ping } from "./routes/ping";
-import { emails } from "./routes/emails";
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { name } from "./routes/name";
+import { pingRoutes } from "./routes/ping";
+import { nameRoutes } from "./routes/name";
+import { contactsRoutes } from "./routes/contacts";
 
 const api = new OpenAPIHono<HonoBindings>();
 
@@ -16,8 +15,8 @@ api.openAPIRegistry.registerComponent("securitySchemes", "ApiKeyAuth", {
   name: "x-api-key",
 });
 
-api.route("/ping", ping);
-api.route("/emails", emails);
-api.route("/name", name);
+api.route("/ping", pingRoutes);
+api.route("/name", nameRoutes);
+api.route("/contacts", contactsRoutes);
 
 export { api };
