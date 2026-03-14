@@ -1,13 +1,19 @@
 import { drizzle } from "drizzle-orm/d1";
-import { NAME_KEY, PING_KEY } from "../constants";
+import { ENABLED_KEY, NAME_KEY, PING_KEY } from "../constants";
 import { sendMail } from "../utils/send-mail";
 import { contacts } from "../db/schema";
 
 export async function healthCheck(env: Env) {
   const lastPingRaw = await env.KV.get(PING_KEY);
-
   if (!lastPingRaw) {
     console.log("No ping data yet");
+    return;
+  }
+
+  const enabledRaw = await env.KV.get(ENABLED_KEY);
+  const enabled = enabledRaw ? JSON.parse(enabledRaw) : false;
+  if (!enabled) {
+    console.log("Not enabled");
     return;
   }
 

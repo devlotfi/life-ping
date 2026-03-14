@@ -9,7 +9,7 @@ import { contacts } from "../db/schema";
 import { drizzle } from "drizzle-orm/d1";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
-import { NAME_KEY, PING_KEY } from "../constants";
+import { ENABLED_KEY, NAME_KEY, PING_KEY } from "../constants";
 import { sendMail } from "../utils/send-mail";
 
 const contactsRoutes = new OpenAPIHono<HonoBindings>();
@@ -197,6 +197,13 @@ contactsRoutes.openapi(
   async (c) => {
     const lastPingRaw = await c.env.KV.get(PING_KEY);
     const name = await c.env.KV.get(NAME_KEY, "text");
+    const enabledRaw = await c.env.KV.get(ENABLED_KEY, "text");
+    const enabled: boolean = enabledRaw ? JSON.parse(enabledRaw) : false;
+
+    if (!enabled) {
+      console.log("Not enabled");
+      return c.json({ success: false }, 200);
+    }
 
     if (!lastPingRaw) {
       console.log("No ping data yet");

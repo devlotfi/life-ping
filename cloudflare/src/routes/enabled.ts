@@ -22,14 +22,14 @@ enabledRoutes.openapi(
             }),
           },
         },
-        description: "Set emails",
+        description: "Get enabled status",
       },
     },
   }),
   async (c) => {
     const value = await c.env.KV.get(ENABLED_KEY);
     return c.json({
-      lastPing: value,
+      enabled: value === "true" ? true : false,
     });
   },
 );
@@ -43,6 +43,17 @@ enabledRoutes.openapi(
         ApiKeyAuth: [],
       },
     ],
+    request: {
+      body: {
+        content: {
+          "application/json": {
+            schema: z.object({
+              enabled: z.boolean(),
+            }),
+          },
+        },
+      },
+    },
     responses: {
       200: {
         content: {
@@ -52,16 +63,14 @@ enabledRoutes.openapi(
             }),
           },
         },
-        description: "Set emails",
+        description: "Set enabled",
       },
     },
   }),
   async (c) => {
-    const now = Date.now();
-    await c.env.KV.put(PING_KEY, now.toString());
-    return c.json({
-      success: true,
-    });
+    const json = await c.req.valid("json");
+    await c.env.KV.put(ENABLED_KEY, JSON.stringify(json.enabled));
+    return c.json({ success: true }, 200);
   },
 );
 
