@@ -1,4 +1,12 @@
 terraform {
+  cloud {
+    organization = "personal-deployment"
+
+    workspaces {
+      name = "life-ping"
+    }
+  }
+
   required_providers {
     cloudflare = {
       source = "cloudflare/cloudflare"
@@ -59,12 +67,12 @@ resource "cloudflare_worker" "worker" {
   name       = "life-ping-worker"
 
   observability = {
-    enabled = true
+    enabled            = true
     head_sampling_rate = 1
   }
 
   subdomain = {
-    enabled = true
+    enabled          = true
     previews_enabled = true
   }
 }
@@ -74,10 +82,10 @@ resource "cloudflare_worker" "worker" {
 # -----------------------------
 
 resource "cloudflare_worker_version" "version" {
-  account_id         = var.account_id
-  worker_id          = cloudflare_worker.worker.id
-  compatibility_date = "2026-03-11"
-  compatibility_flags = [ "nodejs_compat" ]
+  account_id          = var.account_id
+  worker_id           = cloudflare_worker.worker.id
+  compatibility_date  = "2026-03-11"
+  compatibility_flags = ["nodejs_compat"]
 
   main_module = "index.mjs"
 
@@ -101,14 +109,14 @@ resource "cloudflare_worker_version" "version" {
       text = var.resend_api_key
     },
     {
-      name = "KV"
-      type = "kv_namespace"
+      name         = "KV"
+      type         = "kv_namespace"
       namespace_id = cloudflare_workers_kv_namespace.life_ping_kv.id
     },
     {
       name = "D1_DB"
       type = "d1"
-      id = cloudflare_d1_database.db.id
+      id   = cloudflare_d1_database.db.id
     }
   ]
 }
@@ -120,10 +128,10 @@ resource "cloudflare_worker_version" "version" {
 resource "cloudflare_workers_cron_trigger" "cron" {
   account_id  = var.account_id
   script_name = cloudflare_worker.worker.name
-  schedules   = [{
+  schedules = [{
     cron = "0 */12 * * *"
   }]
-  depends_on = [ cloudflare_workers_deployment.deployment ]
+  depends_on = [cloudflare_workers_deployment.deployment]
 }
 
 # -----------------------------

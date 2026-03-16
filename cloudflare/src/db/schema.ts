@@ -1,5 +1,5 @@
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
-import { sql } from "drizzle-orm";
+import { sql, InferSelectModel } from "drizzle-orm";
 
 export const contacts = sqliteTable("Contacts", {
   id: text("id")
@@ -15,3 +15,5 @@ export const contacts = sqliteTable("Contacts", {
     sql`(strftime('%s','now'))`,
   ),
 });
+
+export type Contact = InferSelectModel<typeof contacts>;

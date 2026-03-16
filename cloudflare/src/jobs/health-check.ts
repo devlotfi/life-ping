@@ -37,9 +37,5 @@ export async function healthCheck(env: Env) {
     console.log("No contacts or name configured");
     return;
   }
-
-  const emails = contactList
-    .map((contact) => contact.email)
-    .filter((contact) => contact !== null);
-  await sendMail(emails, name, lastPingDate);
+  await sendMail(contactList, name, lastPingDate);
 }

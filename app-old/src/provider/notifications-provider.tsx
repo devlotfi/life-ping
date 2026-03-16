@@ -9,9 +9,11 @@ import Text from "../components/text";
 import { AssetsContext } from "../context/assets-context";
 import { Image } from "expo-image";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { Button, useTheme } from "react-native-paper";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+import { Button } from "heroui-native";
+import { useTheme } from "react-native-paper";
+import PageLayout from "../layout/page-layout";
 
 export default function NotificationsProvider({ children }: PropsWithChildren) {
   const { t } = useTranslation();
@@ -67,9 +69,10 @@ export default function NotificationsProvider({ children }: PropsWithChildren) {
 
   if (!data?.permission.granted)
     return (
-      <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+      <View style={{ flex: 1, backgroundColor: theme.colors.surface }}>
         <TitleBar></TitleBar>
-        <ContentGradient>
+
+        <PageLayout>
           <View
             style={{
               flex: 1,
@@ -93,7 +96,8 @@ export default function NotificationsProvider({ children }: PropsWithChildren) {
               {t("notifications2")}
             </Text>
           </View>
-        </ContentGradient>
+        </PageLayout>
+
         <View
           style={{
             padding: 20,
@@ -102,23 +106,9 @@ export default function NotificationsProvider({ children }: PropsWithChildren) {
             justifyContent: "center",
           }}
         >
-          <Button
-            mode="contained"
-            loading={isPending}
-            contentStyle={{ paddingVertical: 5, height: 50 }}
-            icon={({ size, color }) => (
-              <FontAwesomeIcon
-                icon={faBell}
-                size={size}
-                color={color}
-              ></FontAwesomeIcon>
-            )}
-            onPress={() => {
-              mutate();
-            }}
-          >
-            {t("allow")}
-          </Button>
+          <View className="flex-1 justify-center items-center bg-background">
+            <Button onPress={() => console.log("Pressed!")}>Get Started</Button>
+          </View>
         </View>
       </View>
     );
