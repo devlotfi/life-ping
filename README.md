@@ -55,3 +55,4 @@ An app that keeps track of your activity and sends alert emails in case of long 
 
 <img src="https://raw.githubusercontent.com/devlotfi/life-ping/master/github-assets/preview-1.png">
 <img src="https://raw.githubusercontent.com/devlotfi/life-ping/master/github-assets/preview-2.png">
+<img src="https://raw.githubusercontent.com/devlotfi/life-ping/master/github-assets/preview-3.png">
