@@ -1,5 +1,5 @@
 variable "cloudflare_api_token" {
-  type = string
+  type      = string
   sensitive = true
 }
 
@@ -8,11 +8,20 @@ variable "account_id" {
 }
 
 variable "api_secret" {
-  type = string
+  type      = string
   sensitive = true
 }
 
 variable "resend_api_key" {
+  type      = string
+  sensitive = true
+}
+
+variable "vapid_public_key" {
   type = string
+}
+
+variable "vapid_private_key" {
+  type      = string
   sensitive = true
 }

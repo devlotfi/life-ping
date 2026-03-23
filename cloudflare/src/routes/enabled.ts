@@ -1,5 +1,5 @@
 import { HonoBindings } from "../types/hono-bindings";
-import { ENABLED_KEY, PING_KEY } from "../constants";
+import { ENABLED_KEY } from "../constants";
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 
 const enabledRoutes = new OpenAPIHono<HonoBindings>();

@@ -3,6 +3,15 @@ import { Scalar } from "@scalar/hono-api-reference";
 import { api } from "./api";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { HonoBindings } from "./types/hono-bindings";
+import { reminder } from "./jobs/reminder";
+import webpush from "web-push";
+import { env } from "cloudflare:workers";
+
+webpush.setVapidDetails(
+  "mailto:test@test.com",
+  env.VAPID_PUBLIC_KEY,
+  env.VAPID_PRIVATE_KEY,
+);
 
 const app = new OpenAPIHono<HonoBindings>();
 
@@ -25,6 +34,13 @@ export default {
     env: Env,
     ctx: ExecutionContext,
   ) {
-    ctx.waitUntil(healthCheck(env));
+    switch (controller.cron) {
+      case "0 */12 * * *":
+        ctx.waitUntil(reminder(env));
+        break;
+      case "0 */6 * * *":
+        ctx.waitUntil(healthCheck(env));
+        break;
+    }
   },
 } satisfies ExportedHandler<Env>;

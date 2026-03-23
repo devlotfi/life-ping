@@ -15,6 +15,13 @@
       "when": 1773421745506,
       "tag": "0001_melted_tigra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1774258697701,
+      "tag": "0002_wise_red_wolf",
+      "breakpoints": true
     }
   ]
 }

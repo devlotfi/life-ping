@@ -5,7 +5,7 @@ import {
   createSelectSchema,
   createUpdateSchema,
 } from "drizzle-zod";
-import { contacts } from "../db/schema";
+import { contactsTable } from "../db/schema";
 import { drizzle } from "drizzle-orm/d1";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
@@ -16,21 +16,16 @@ const contactsRoutes = new OpenAPIHono<HonoBindings>();
 
 const phoneRegex = /^\+[1-9]\d{7,14}$/;
 
-export const contactSelectSchema = createSelectSchema(contacts);
+export const contactSelectSchema = createSelectSchema(contactsTable);
 
-export const contactInsertSchema = createInsertSchema(contacts, {
+export const contactInsertSchema = createInsertSchema(contactsTable, {
   email: z.email().optional().nullable(),
-  phone_number: z
-    .string()
-    .regex(phoneRegex, "Phone must be in international format +XXXXXXXX")
-    .optional()
-    .nullable(),
 }).omit({
   id: true,
   createdAt: true,
 });
 
-export const contactUpdateSchema = createUpdateSchema(contacts, {
+export const contactUpdateSchema = createUpdateSchema(contactsTable, {
   email: z.email().optional().nullable(),
   phone_number: z
     .string()
@@ -60,7 +55,7 @@ contactsRoutes.openapi(
   }),
   async (c) => {
     const db = drizzle(c.env.D1_DB);
-    const data = await db.select().from(contacts).all();
+    const data = await db.select().from(contactsTable).all();
     return c.json(data, 200);
   },
 );
@@ -93,7 +88,11 @@ contactsRoutes.openapi(
   async (c) => {
     const db = drizzle(c.env.D1_DB);
     const body = c.req.valid("json");
-    const result = await db.insert(contacts).values(body).returning().get();
+    const result = await db
+      .insert(contactsTable)
+      .values(body)
+      .returning()
+      .get();
     return c.json(result, 200);
   },
 );
@@ -134,9 +133,9 @@ contactsRoutes.openapi(
     const body = c.req.valid("json");
 
     const result = await db
-      .update(contacts)
+      .update(contactsTable)
       .set(body)
-      .where(eq(contacts.id, id))
+      .where(eq(contactsTable.id, id))
       .returning()
       .get();
 
@@ -171,7 +170,7 @@ contactsRoutes.openapi(
     const db = drizzle(c.env.D1_DB);
     const { id } = c.req.valid("param");
 
-    await db.delete(contacts).where(eq(contacts.id, id));
+    await db.delete(contactsTable).where(eq(contactsTable.id, id));
     return c.json({ success: true }, 200);
   },
 );
@@ -213,16 +212,12 @@ contactsRoutes.openapi(
     const lastPingDate = new Date(Number(lastPingRaw));
 
     const db = drizzle(c.env.D1_DB);
-    const contactList = await db.select().from(contacts).all();
+    const contactList = await db.select().from(contactsTable).all();
     if (!name || !contactList || contactList.length === 0) {
       console.log("No contacts or name configured");
       return c.json({ success: false }, 200);
     }
-
-    const emails = contactList
-      .map((contact) => contact.email)
-      .filter((contact) => contact !== null);
-    await sendMail(emails, name, lastPingDate);
+    await sendMail(contactList, name, lastPingDate);
     return c.json({ success: true }, 200);
   },
 );

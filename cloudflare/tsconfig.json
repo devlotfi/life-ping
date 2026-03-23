@@ -39,10 +39,5 @@
     "types": ["./worker-configuration.d.ts", "node"]
   },
   "exclude": ["test"],
-  "include": [
-    "worker-configuration.d.ts",
-    "drizzle.config.ts",
-    "src/**/*.{ts,tsx}",
-    "emails/**/*.{ts,tsx}"
-  ]
+  "include": ["worker-configuration.d.ts", "drizzle.config.ts", "src/**/*.ts"]
 }

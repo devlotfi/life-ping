@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/d1";
 import { ENABLED_KEY, NAME_KEY, PING_KEY } from "../constants";
 import { sendMail } from "../utils/send-mail";
-import { contacts } from "../db/schema";
+import { contactsTable } from "../db/schema";
 
 export async function healthCheck(env: Env) {
   const lastPingRaw = await env.KV.get(PING_KEY);
@@ -30,7 +30,7 @@ export async function healthCheck(env: Env) {
 
   console.log("Ping expired — sending alert emails");
   const db = drizzle(env.D1_DB);
-  const contactList = await db.select().from(contacts).all();
+  const contactList = await db.select().from(contactsTable).all();
   const name = await env.KV.get(NAME_KEY, "text");
 
   if (!name || !contactList || contactList.length === 0) {
