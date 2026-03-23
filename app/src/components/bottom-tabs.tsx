@@ -62,7 +62,7 @@ export default function BottomTabs() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex md:hidden h-[6rem] pb-[0.5rem] rounded-tl-4xl rounded-tr-4xl md:rounded-none md:pl-0">
+    <div className="flex md:hidden h-[5.5rem] rounded-tl-4xl rounded-tr-4xl md:rounded-none md:pl-0">
       <div className="flex items-center w-full gap-[0.5rem] p-[0.3rem]">
         <BottomTabsButton path="/" icon={"gauge"}>
           {t("dashboard")}
