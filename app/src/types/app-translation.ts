@@ -5,6 +5,9 @@ export interface AppTranslation {
   notFound: string;
   landingPage: string;
 
+  systemDisabled: string;
+  alertsWillNotBesent: string;
+  nameMissing: string;
   save: string;
   apiKey: string;
   apiKeyDescription: string;

@@ -3,6 +3,7 @@ import RequiredSubscriptionProvider from "../provider/required-subscription-prov
 import SectionHeader from "../components/section-header";
 import { useTranslation } from "react-i18next";
 import {
+  Alert,
   Button,
   Card,
   Label,
@@ -75,6 +76,16 @@ function EnabledOption() {
         <SectionTitle icon="shield-check">{t("enabled")}</SectionTitle>
         <div className="flex">{t("enabledDescription")}</div>
 
+        {!data.enabled ? (
+          <Alert status="danger">
+            <Alert.Indicator />
+            <Alert.Content>
+              <Alert.Title>{t("systemDisabled")}</Alert.Title>
+              <Alert.Description>{t("alertsWillNotBesent")}</Alert.Description>
+            </Alert.Content>
+          </Alert>
+        ) : null}
+
         <Switch
           size="lg"
           isSelected={data.enabled}
@@ -134,7 +145,7 @@ function NameOption() {
         variant: "success",
       });
       queryClient.refetchQueries({
-        queryKey: ["get", "/api/enabled"],
+        queryKey: ["get", "/api/name"],
       });
     },
   });
@@ -182,6 +193,18 @@ function NameOption() {
           onSubmit={formik.handleSubmit}
           className="flex flex-col gap-[1rem]"
         >
+          {!data.name ? (
+            <Alert status="danger">
+              <Alert.Indicator />
+              <Alert.Content>
+                <Alert.Title>{t("nameMissing")}</Alert.Title>
+                <Alert.Description>
+                  {t("alertsWillNotBesent")}
+                </Alert.Description>
+              </Alert.Content>
+            </Alert>
+          ) : null}
+
           <ValidatedTextField
             formik={formik}
             name="name"

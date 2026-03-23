@@ -22,6 +22,9 @@ export const AR: AppTranslation = {
   enabledDescription: "تفعيل أو تعطيل العد التنازلي للتنبيه",
   nameSaved: "تم حفظ الاسم",
   email: "البريد الإلكتروني",
+  systemDisabled: "النظام معطل",
+  alertsWillNotBesent: "لن يتم إرسال التنبيهات",
+  nameMissing: "الاسم مفقود",
 
   // API / Config
   apiKey: "مفتاح API",

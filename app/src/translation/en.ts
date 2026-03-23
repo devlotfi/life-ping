@@ -22,6 +22,9 @@ export const EN: AppTranslation = {
   nameDescription: "The name that will be shown in the alert E-mail",
   nameSaved: "Name saved",
   email: "Email",
+  systemDisabled: "System is disabled",
+  alertsWillNotBesent: "Alerts will not be sent",
+  nameMissing: "Name is missing",
 
   // API / Config
   apiKey: "API Key",

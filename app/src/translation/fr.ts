@@ -22,6 +22,9 @@ export const FR: AppTranslation = {
   enabledDescription: "Activer ou désactiver le compte à rebours des alertes",
   nameSaved: "Nom enregistré",
   email: "Email",
+  systemDisabled: "Le système est désactivé",
+  alertsWillNotBesent: "Les alertes ne seront pas envoyées",
+  nameMissing: "Nom manquant",
 
   // API / Config
   apiKey: "Clé API",
