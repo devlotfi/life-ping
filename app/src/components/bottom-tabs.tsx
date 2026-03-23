@@ -47,7 +47,7 @@ function BottomTabsButton({
         </div>
         <div
           className={cn(
-            "flex text-[10pt] font-medium text-foreground",
+            "flex text-[10pt] font-medium text-foreground whitespace-break-spaces",
             isActive && "text-accent",
           )}
         >

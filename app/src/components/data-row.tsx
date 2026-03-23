@@ -3,7 +3,7 @@ import type { ComponentProps, ReactNode } from "react";
 
 interface DataRowProps extends ComponentProps<"div"> {
   name: ReactNode;
-  value: string;
+  value: ReactNode;
   fold?: boolean;
 }
 

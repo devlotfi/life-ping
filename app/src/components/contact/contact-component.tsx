@@ -4,6 +4,8 @@ import EditConnectionModal from "./edit-contact-modal";
 import { Pen, Trash } from "lucide-react";
 import type { paths } from "../../__generated__/schema";
 import DataRow from "../data-row";
+import { t } from "i18next";
+import { renderFlag } from "../../utils/render-flag";
 
 interface ContactProps {
   contact: paths["/api/contacts"]["get"]["responses"]["200"]["content"]["application/json"][number];
@@ -31,6 +33,15 @@ export default function ContactComponent({ contact }: ContactProps) {
               {contact.name}
             </div>
             <DataRow name="E-mail" value={contact.email || ""}></DataRow>
+            <DataRow
+              name={t("language")}
+              value={
+                <div className="flex items-center gap-[0.5rem]">
+                  <div className="flex">{contact.language}</div>
+                  {renderFlag(contact.language)}
+                </div>
+              }
+            ></DataRow>
           </div>
 
           <div className="flex md:flex-col gap-[0.3rem]">
@@ -44,6 +55,7 @@ export default function ContactComponent({ contact }: ContactProps) {
             <Button
               isIconOnly
               variant="outline"
+              className="text-danger"
               onPress={() => deleteState.open()}
             >
               <Trash></Trash>
