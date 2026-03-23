@@ -12,14 +12,19 @@ export default function Navbar() {
   const { beforeInstallPromptEvent } = useContext(PWAContext);
   const { apiUrl, apiSecret } = useContext(ApiContext);
 
-  if (!apiUrl || !apiSecret) throw new Error("Missing api data");
-
-  const { data } = $api.useQuery("get", "/api/name", {
-    baseUrl: apiUrl,
-    headers: {
-      "x-api-key": apiSecret,
+  const { data } = $api.useQuery(
+    "get",
+    "/api/name",
+    {
+      baseUrl: apiUrl!,
+      headers: {
+        "x-api-key": apiSecret!,
+      },
     },
-  });
+    {
+      enabled: apiUrl && apiSecret ? true : false,
+    },
+  );
 
   return (
     <div className="flex flex-1 justify-between items-center min-h-[4rem] px-[0.7rem] bg-surface">
